@@ -1,0 +1,10 @@
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+uptime | sed 's/.*up \([^,]*\), .*/\1/'
+hey
