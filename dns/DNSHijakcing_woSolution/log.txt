@@ -1,0 +1,537 @@
+NET address: 192.168.1.0
+Mask: 255.255.255.0
+mm set
+hey
+a packet is received! 0 
+
+
+*****************************
+The message header:
+	 Transaction ID: 670;
+	 Query(0)/Response(1): 0
+	 174 questions; 
+	 0 answers; 
+	 174 authoritative servers; 
+	 136 additional records. 
+
+==========================
+=====Queries section======
+Query No. 1
+name: :.L.ﬁ‰∞ù¯T6∂ÂN`ﬁ‰∞ùP¿ 
+query type: 0, class: 0
+Query No. 2
+name:  
+query type: 0, class: 0
+Query No. 3
+name:  
+query type: 0, class: 0
+Query No. 4
+name:  
+query type: 0, class: 0
+Query No. 5
+name:  
+query type: 0, class: 0
+Query No. 6
+name:  
+query type: 0, class: 0
+Query No. 7
+name:  
+query type: 0, class: 0
+Query No. 8
+name:  
+query type: 0, class: 0
+Query No. 9
+name:  
+query type: 0, class: 0
+Query No. 10
+name:  
+query type: 0, class: 0
+Query No. 11
+name:  
+query type: 0, class: 0
+Query No. 12
+name:  
+query type: 0, class: 0
+Query No. 13
+name:  
+query type: 0, class: 0
+Query No. 14
+name:  
+query type: 0, class: 0
+Query No. 15
+name:  
+query type: 0, class: 0
+Query No. 16
+name:  
+query type: 0, class: 0
+Query No. 17
+name:  
+query type: 0, class: 0
+Query No. 18
+name:  
+query type: 0, class: 0
+Query No. 19
+name:  
+query type: 0, class: 0
+Query No. 20
+name:  
+query type: 0, class: 0
+Query No. 21
+name:  
+query type: 0, class: 0
+Query No. 22
+name:  
+query type: 0, class: 0
+Query No. 23
+name:  
+query type: 0, class: 0
+Query No. 24
+name:  
+query type: 0, class: 0
+Query No. 25
+name:  
+query type: 0, class: 0
+Query No. 26
+name:  
+query type: 0, class: 0
+Query No. 27
+name:  
+query type: 0, class: 0
+Query No. 28
+name:  
+query type: 0, class: 0
+Query No. 29
+name:  
+query type: 0, class: 0
+Query No. 30
+name:  
+query type: 0, class: 0
+Query No. 31
+name:  
+query type: 0, class: 0
+Query No. 32
+name:  
+query type: 0, class: 0
+Query No. 33
+name:  
+query type: 0, class: 0
+Query No. 34
+name:  
+query type: 0, class: 0
+Query No. 35
+name:  
+query type: 0, class: 0
+Query No. 36
+name:  
+query type: 0, class: 0
+Query No. 37
+name:  
+query type: 0, class: 0
+Query No. 38
+name:  
+query type: 0, class: 0
+Query No. 39
+name:  
+query type: 0, class: 0
+Query No. 40
+name:  
+query type: 0, class: 0
+Query No. 41
+name:  
+query type: 0, class: 0
+Query No. 42
+name:  
+query type: 0, class: 0
+Query No. 43
+name:  
+query type: 0, class: 0
+Query No. 44
+name:  
+query type: 0, class: 0
+Query No. 45
+name:  
+query type: 0, class: 0
+Query No. 46
+name:  
+query type: 0, class: 0
+Query No. 47
+name:  
+query type: 0, class: 0
+Query No. 48
+name:  
+query type: 0, class: 0
+Query No. 49
+name:  
+query type: 0, class: 0
+Query No. 50
+name:  
+query type: 0, class: 0
+Query No. 51
+name:  
+query type: 0, class: 0
+Query No. 52
+name:  
+query type: 0, class: 0
+Query No. 53
+name:  
+query type: 0, class: 0
+Query No. 54
+name:  
+query type: 0, class: 0
+Query No. 55
+name:  
+query type: 0, class: 0
+Query No. 56
+name:  
+query type: 0, class: 0
+Query No. 57
+name:  
+query type: 0, class: 0
+Query No. 58
+name:  
+query type: 0, class: 0
+Query No. 59
+name:  
+query type: 0, class: 0
+Query No. 60
+name:  
+query type: 0, class: 0
+Query No. 61
+name:  
+query type: 0, class: 0
+Query No. 62
+name:  
+query type: 0, class: 0
+Query No. 63
+name:  
+query type: 0, class: 0
+Query No. 64
+name:  
+query type: 0, class: 0
+Query No. 65
+name:  
+query type: 0, class: 0
+Query No. 66
+name:  
+query type: 0, class: 0
+Query No. 67
+name:  
+query type: 0, class: 0
+Query No. 68
+name:  
+query type: 0, class: 0
+Query No. 69
+name:  
+query type: 0, class: 0
+Query No. 70
+name:  
+query type: 0, class: 0
+Query No. 71
+name:  
+query type: 0, class: 0
+Query No. 72
+name:  
+query type: 0, class: 0
+Query No. 73
+name:  
+query type: 0, class: 0
+Query No. 74
+name:  
+query type: 0, class: 0
+Query No. 75
+name:  
+query type: 0, class: 0
+Query No. 76
+name:  
+query type: 0, class: 0
+Query No. 77
+name:  
+query type: 0, class: 0
+Query No. 78
+name:  
+query type: 0, class: 0
+Query No. 79
+name:  
+query type: 0, class: 0
+Query No. 80
+name:  
+query type: 0, class: 0
+Query No. 81
+name:  
+query type: 0, class: 0
+Query No. 82
+name:  
+query type: 0, class: 0
+Query No. 83
+name:  
+query type: 0, class: 0
+Query No. 84
+name:  
+query type: 0, class: 0
+Query No. 85
+name:  
+query type: 0, class: 0
+Query No. 86
+name:  
+query type: 0, class: 0
+Query No. 87
+name:  
+query type: 0, class: 0
+Query No. 88
+name:  
+query type: 0, class: 0
+Query No. 89
+name:  
+query type: 0, class: 0
+Query No. 90
+name:  
+query type: 0, class: 0
+Query No. 91
+name:  
+query type: 0, class: 0
+Query No. 92
+name:  
+query type: 0, class: 0
+Query No. 93
+name:  
+query type: 0, class: 0
+Query No. 94
+name:  
+query type: 0, class: 0
+Query No. 95
+name:  
+query type: 0, class: 0
+Query No. 96
+name:  
+query type: 0, class: 0
+Query No. 97
+name:  
+query type: 0, class: 0
+Query No. 98
+name:  
+query type: 0, class: 0
+Query No. 99
+name:  
+query type: 0, class: 0
+Query No. 100
+name:  
+query type: 0, class: 0
+Query No. 101
+name:  
+query type: 0, class: 0
+Query No. 102
+name:  
+query type: 0, class: 0
+Query No. 103
+name:  
+query type: 0, class: 0
+Query No. 104
+name:  
+query type: 0, class: 0
+Query No. 105
+name:  
+query type: 0, class: 0
+Query No. 106
+name:  
+query type: 0, class: 0
+Query No. 107
+name:  
+query type: 0, class: 0
+Query No. 108
+name:  
+query type: 0, class: 0
+Query No. 109
+name:  
+query type: 0, class: 0
+Query No. 110
+name:  
+query type: 0, class: 0
+Query No. 111
+name:  
+query type: 0, class: 0
+Query No. 112
+name:  
+query type: 0, class: 0
+Query No. 113
+name:  
+query type: 0, class: 0
+Query No. 114
+name:  
+query type: 0, class: 0
+Query No. 115
+name:  
+query type: 0, class: 0
+Query No. 116
+name:  
+query type: 0, class: 0
+Query No. 117
+name:  
+query type: 0, class: 0
+Query No. 118
+name:  
+query type: 0, class: 0
+Query No. 119
+name:  
+query type: 0, class: 0
+Query No. 120
+name:  
+query type: 0, class: 0
+Query No. 121
+name:  
+query type: 0, class: 0
+Query No. 122
+name:  
+query type: 0, class: 0
+Query No. 123
+name:  
+query type: 0, class: 0
+Query No. 124
+name:  
+query type: 0, class: 0
+Query No. 125
+name:  
+query type: 0, class: 0
+Query No. 126
+name:  
+query type: 0, class: 0
+Query No. 127
+name:  
+query type: 0, class: 0
+Query No. 128
+name:  
+query type: 0, class: 0
+Query No. 129
+name:  
+query type: 0, class: 0
+Query No. 130
+name:  
+query type: 0, class: 0
+Query No. 131
+name:  
+query type: 0, class: 0
+Query No. 132
+name:  
+query type: 0, class: 0
+Query No. 133
+name:  
+query type: 0, class: 0
+Query No. 134
+name:  
+query type: 0, class: 0
+Query No. 135
+name:  
+query type: 0, class: 0
+Query No. 136
+name:  
+query type: 0, class: 0
+Query No. 137
+name:  
+query type: 0, class: 0
+Query No. 138
+name:  
+query type: 0, class: 0
+Query No. 139
+name:  
+query type: 0, class: 0
+Query No. 140
+name:  
+query type: 0, class: 0
+Query No. 141
+name:  
+query type: 0, class: 0
+Query No. 142
+name:  
+query type: 0, class: 0
+Query No. 143
+name:  
+query type: 0, class: 0
+Query No. 144
+name:  
+query type: 0, class: 0
+Query No. 145
+name:  
+query type: 0, class: 0
+Query No. 146
+name:  
+query type: 0, class: 0
+Query No. 147
+name:  
+query type: 0, class: 0
+Query No. 148
+name:  
+query type: 0, class: 0
+Query No. 149
+name:  
+query type: 0, class: 0
+Query No. 150
+name:  
+query type: 0, class: 0
+Query No. 151
+name:  
+query type: 0, class: 0
+Query No. 152
+name:  
+query type: 0, class: 0
+Query No. 153
+name:  
+query type: 0, class: 0
+Query No. 154
+name:  
+query type: 0, class: 0
+Query No. 155
+name:  
+query type: 0, class: 0
+Query No. 156
+name:  
+query type: 0, class: 0
+Query No. 157
+name:  
+query type: 0, class: 0
+Query No. 158
+name:  
+query type: 0, class: 0
+Query No. 159
+name:  
+query type: 0, class: 0
+Query No. 160
+name:  
+query type: 0, class: 0
+Query No. 161
+name:  
+query type: 0, class: 0
+Query No. 162
+name:  
+query type: 0, class: 0
+Query No. 163
+name:  
+query type: 0, class: 0
+Query No. 164
+name:  
+query type: 0, class: 0
+Query No. 165
+name:  
+query type: 0, class: 0
+Query No. 166
+name:  
+query type: 0, class: 0
+Query No. 167
+name:  
+query type: 0, class: 0
+Query No. 168
+name:  
+query type: 0, class: 0
+Query No. 169
+name:  
+query type: 0, class: 0
+Query No. 170
+name:  
+query type: 0, class: 0
+Query No. 171
+name:  
+query type: 0, class: 0
+Query No. 172
+name:  
+query type: 0, class: 0
+Query No. 173
+name:  
+query type: 0, cla

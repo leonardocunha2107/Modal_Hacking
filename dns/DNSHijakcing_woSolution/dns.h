@@ -17,7 +17,7 @@ typedef unsigned int uint32_t;
 
 #define BUF_SIZE 65536
 #define HOST_NAME_SIZE 4096
-#define ANS_SIZE 10
+#define ANS_SIZE 1
 #define IN_SIZE 4
 #define IN6_SIZE 16
 
