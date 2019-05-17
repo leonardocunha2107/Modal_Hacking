@@ -27,7 +27,7 @@ int data_size;
 char* random_mac_adress(){
     int i, tp;
     int j=0;
-    srand(time(NULL) + getpid());
+    srand(time(NULL));
     char mac[20];
     for (i = 0; i < 6; i++) {
         tp = rand() % 256;
@@ -76,13 +76,12 @@ void fill_iph(struct iphdr* iph){
 }
 
 int main(){
-    unsigned short proto =0x1234;
+    unsigned short proto =0x0800;
     int fd = socket(AF_PACKET, SOCK_RAW,htons(proto));
 	srand(time(NULL));
 	char* src_ip=malloc(100);
 	strcpy(src_ip,SRC_IP);
-    int hincl = 1;                  /* 1 = on, 0 = off */
-    setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl));
+    int hincl = 1;               
 
 	if(fd < 0)
 	{
@@ -142,7 +141,7 @@ int main(){
     saddrll.sll_ifindex = 2;
     saddrll.sll_halen = ETH_ALEN;
     memcpy((void*)(saddrll.sll_addr), eth->h_dest, ETH_ALEN);
-	sendto(fd,packet,ntohs(iph->tot_len)+sizeof(struct  ethhdr),0,&saddrll,sizeof(saddrll));
+    //sendto(fd,packet,ntohs(iph->tot_len)+sizeof(struct  ethhdr),0,&saddrll,sizeof(saddrll));
 	perror("");
 	}
 	return 0;
