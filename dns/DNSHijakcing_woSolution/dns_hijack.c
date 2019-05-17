@@ -105,8 +105,11 @@ int main(int argc, char *argv[])
 	//Otherwise, promiscuous mode is set
 	if (pcap_can_set_rfmon(handle)==1){
 		printf("mm set\n");
-		if (pcap_set_rfmon(handle, 1))
+		if (pcap_set_rfmon(handle, 1)){
+			printf("erro monitor mode");
 			pcap_perror(handle,"Error while setting monitor mode");
+		}
+			
 	}
 
 	if(pcap_set_promisc(handle,1))
@@ -200,7 +203,7 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 		exit(1);
 	}
 
-	print_udp_packet((u_char*)in_iphr, size);
+	//print_udp_packet((u_char*)in_iphr, size);
 
 	//to keep the DNS information received.
 	res_record answers[ANS_SIZE], auth[ANS_SIZE], addit[ANS_SIZE];

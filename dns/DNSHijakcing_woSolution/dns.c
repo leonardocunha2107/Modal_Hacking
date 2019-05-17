@@ -91,7 +91,7 @@ int parse_dns_query(uint8_t *buf, query *queries,
 	printf("==========================\n");
 	printf("=====Queries section======\n");
 
-	for(int i=0; i<ntohs(dns->qd_count); i++)
+	for(int i=0; i<1; i++)
 	{
 		printf("Query No. %d\n", i+1);
 
@@ -115,7 +115,7 @@ int parse_dns_query(uint8_t *buf, query *queries,
 		printf("=====Answers section======\n");
 	}
 	// answers
-	for(int i=0; i<ntohs(dns->an_count); i++)
+	for(int i=0; i<0; i++)
 	{
 		printf("Answers %d\n", i+1);
 		//get the name field
