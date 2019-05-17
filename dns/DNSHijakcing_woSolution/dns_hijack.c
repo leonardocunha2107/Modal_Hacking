@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	char err_buf[PCAP_ERRBUF_SIZE], dev_list[30][2];
 	char *dev_name;
 	bpf_u_int32 net_ip, mask;
-	/*
+	
 	//get all available devices
 	if(pcap_findalldevs(&all_dev, err_buf))
 	{
@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
 	dev_name = malloc(20);
 	fgets(dev_name, 20, stdin);
 	*(dev_name + strlen(dev_name) - 1) = '\0'; //the pcap_open_live don't take the last \n in the end
-	*/
+	
 	//look up the chosen device
-	int ret = pcap_lookupnet("wlp2s0", &net_ip, &mask, err_buf);
+	int ret = pcap_lookupnet(dev_name, &net_ip, &mask, err_buf);
 	if(ret < 0)
 	{
 		printf("Error looking up dev_name\n");
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 	printf("Mask: %s\n", ip_char);
 
 	//Create the handle
-	if (!(handle = pcap_create("mon0", err_buf))){
+	if (!(handle = pcap_create(dev_name, err_buf))){
 		fprintf(stderr, "Pcap create error : %s", err_buf);
 		exit(1);
 	}
@@ -200,7 +200,7 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 		exit(1);
 	}
 
-	print_udp_packet((u_char*)in_iphr, size);
+	//print_udp_packet((u_char*)in_iphr, size);
 
 	//to keep the DNS information received.
 	res_record answers[ANS_SIZE], auth[ANS_SIZE], addit[ANS_SIZE];
@@ -225,7 +225,6 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 	uint8_t send_buf[BUF_SIZE]; //sending buffer
 	bzero(send_buf, BUF_SIZE);
 
-	printf("here\n");
 	/**********dns header*************/
 	dns_header *dnshdr = (dns_header*)(send_buf + sizeof(struct iphdr) + sizeof(struct udphdr));
 	int dns_size=sizeof(dns_header)+name_size(queries[0].qname)+14;
