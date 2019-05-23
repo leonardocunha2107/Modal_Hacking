@@ -71,7 +71,6 @@ void fill_iph(struct iphdr* iph){
 	iph->protocol=IPPROTO_TCP;
 	inet_pton(AF_INET,SRC_IP,&(iph->saddr));
 	inet_pton(AF_INET,DEST_IP,&(iph->daddr));
-	iph->check=htons(checksum((char*) iph,iph->tot_len));
 	iph->check=0;
 }
 

@@ -1,4 +1,3 @@
-s
 /*
  * dns_client.c
  *
@@ -23,8 +22,8 @@ s
  */
 int main(int argc, char *argv[])
 {
-	char *dns_server = "8.8.8.8"; //google's server
-//	char *dns_server = "129.104.32.41"; //X's dns server
+//	char *dns_server = "8.8.8.8"; //google's server
+	char *dns_server = "129.104.32.41"; //X's dns server
 //	char *dns_server = "127.0.0.1";
 
 	int sockfd;

@@ -237,6 +237,5 @@ void print_tcp_packet(const u_char *  , int );
 void print_udp_packet(const u_char * , int);
 void print_icmp_packet(const u_char * , int );
 void PrintData (const u_char * , int);
-void print_udp_header(const u_char * , int );
 
 #endif /* HEADER_H_ */

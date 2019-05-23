@@ -132,7 +132,7 @@ struct iphdr
     u_int32_t daddr;
     /*The options start here. */
   };
-typedef struct iphdr iphdr;
+
 
 //ethernet header
 
@@ -210,7 +210,7 @@ struct udphdr {
   u_int16_t	len;
   u_int16_t	check;
 };
-typedef struct udphdr udphdr;
+
 /*
     pseudo udp header needed for udp header checksum calculation
 */
@@ -237,6 +237,5 @@ void print_tcp_packet(const u_char *  , int );
 void print_udp_packet(const u_char * , int);
 void print_icmp_packet(const u_char * , int );
 void PrintData (const u_char * , int);
-void print_udp_header(const u_char * , int );
 
 #endif /* HEADER_H_ */

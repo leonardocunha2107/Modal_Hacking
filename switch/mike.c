@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     return -1;
   }
  
-  int ifindex=9;
+  int ifindex=2;
   
  
   union ethframe frame;
