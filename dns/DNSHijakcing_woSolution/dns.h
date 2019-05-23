@@ -17,7 +17,7 @@ typedef unsigned int uint32_t;
 
 #define BUF_SIZE 65536
 #define HOST_NAME_SIZE 4096
-#define ANS_SIZE 1
+#define ANS_SIZE 10
 #define IN_SIZE 4
 #define IN6_SIZE 16
 
@@ -304,7 +304,7 @@ int parse_dns_query(uint8_t *buf, query *queries, res_record *answers,
  * \param qd_count number of queries
  * \param an_count number of answers
  * \param ns_count number of authority section
- * \param ar_count number of addit0ional section
+ * \param ar_count number of additional section
  */
 void build_dns_header(dns_header *dns, int id, int query, int qd_count,
 		int an_count, int ns_count, int ar_count);
