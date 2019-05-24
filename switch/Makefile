@@ -5,3 +5,6 @@ switch: switch.c header
 
 header: header.c
 	gcc -c header.c
+
+clean:
+	rm *.o switch

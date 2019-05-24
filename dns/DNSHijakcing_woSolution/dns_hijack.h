@@ -18,6 +18,6 @@ int header_type;
 char *address_array = "192.168.1.102"; //the answer to put...
 
 void process_packet(u_char *, const struct pcap_pkthdr *, const u_char *);
-
+void process_single_packet(const struct pcap_pkthdr *, const u_char *);
 
 #endif /* PCAP_EXAMPLE_H_ */
